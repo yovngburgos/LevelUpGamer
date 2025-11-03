@@ -1,15 +1,18 @@
-// src/components/FeaturedProducts.jsx
 import products from '../data/products.jsx';
-import ProductCard from './ProductCard';
+import ProductCard from '../components/ProductCard';
 
-export default function FeaturedProducts() {
-  const featuredProducts = products.slice(0, 3);
-
+export default function Productos() {
   return (
     <section className="container py-5">
-      <h2 className="text-center mb-5">Productos Destacados</h2>
+      <header className="text-center mb-5">
+        <h1 className="mb-3">Catálogo de Productos</h1>
+        <p className="text-muted">
+          Explora nuestra selección gamer y encuentra el equipo perfecto para tu próxima partida.
+        </p>
+      </header>
+
       <div className="row g-4 justify-content-center">
-        {featuredProducts.map((product) => (
+        {products.map((product) => (
           <ProductCard
             key={product.id}
             image={product.image}

@@ -27,9 +27,7 @@ export default function Navbar({ isAuthenticated = false, cartCount = 0 }) {
               <NavLink
                 to="/"
                 end
-                className={({ isActive }) =>
-                  `nav-link ${isActive ? 'active' : ''}`
-                }
+                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                 aria-current="page"
               >
                 Inicio
@@ -78,7 +76,10 @@ export default function Navbar({ isAuthenticated = false, cartCount = 0 }) {
               type="button"
             >
               🛒 Carrito
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary" id="cart-count">
+              <span
+                className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                id="cart-count"
+              >
                 {cartCount}
               </span>
             </button>
@@ -88,4 +89,3 @@ export default function Navbar({ isAuthenticated = false, cartCount = 0 }) {
     </nav>
   );
 }
-
