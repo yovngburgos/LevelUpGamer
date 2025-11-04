@@ -12,12 +12,8 @@ export default function Hero() {
           Tu tienda gamer de confianza: notebooks, PCs, accesorios y más.
         </p>
 
-        <NavLink
-          to="/catalogo"
-          className="btn btn-primary btn-lg mt-3 animate__animated animate__zoomIn"
-        >
-          Explorar Productos
-        </NavLink>
+        <NavLink to="/productos" className="btn btn-primary btn-lg mt-3">Explorar Productos</NavLink>
+
       </div>
     </section>
   );
