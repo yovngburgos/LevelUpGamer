@@ -38,11 +38,12 @@ export default function Navbar({ isAuthenticated = false, cartCount = 0 }) {
 
             <li className="nav-item">
               <NavLink
-                to="/productos"
+                to="/catalogo"
                 className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               >
                 Productos
               </NavLink>
+
             </li>
 
             <li className="nav-item">

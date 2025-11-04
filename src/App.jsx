@@ -1,27 +1,39 @@
-// src/App.jsx
-import './App.css';
-import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import Catalogo from "./pages/Catalogo";
+import Products from "./pages/Products";
+import Contacto from "./pages/Contacto";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Profile from "./pages/Profile";
+import Checkout from "./pages/Checkout";
+import OrderSummary from "./pages/OrderSummary";
+
 import Footer from "./components/Footer";
 import CartModal from "./components/CartModal";
 
-export default function App() {
-  // 🛒 Estado global del carrito
-  const [cartItems, setCartItems] = useState([]);
+function AppRoutes() {
+  const [cartItems, setCartItems] = useState(() => {
+    try {
+      const saved = localStorage.getItem("cartItems");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
 
-  // 🧹 Vaciar carrito
-  const clearCart = () => setCartItems([]);
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
-  // 💳 Finalizar compra (simulación)
-  const checkout = () => {
-    alert("Compra finalizada correctamente 🛍️");
-    setCartItems([]); // limpia el carrito tras comprar
+  const addItem = (item) => {
+    // usa sku como id estable
+    setCartItems((prev) => [...prev, { ...item, id: item.sku }]);
   };
 
-  // ❌ Eliminar producto individual
   const removeItem = (item) => {
     setCartItems((prev) =>
       prev.filter((x, i) =>
@@ -30,29 +42,59 @@ export default function App() {
     );
   };
 
-  return (
-    <BrowserRouter>
-      {/* Navbar fijo arriba */}
-      <Navbar />
+  const clearCart = () => setCartItems([]);
 
-      {/* Contenido principal con padding para el navbar */}
+  const navigate = useNavigate();
+  const checkout = () => {
+    // opcional: no limpiar acá; deja que Checkout lo haga tras submit
+    navigate("/checkout");
+  };
+
+  return (
+    <>
+      <Navbar cartCount={cartItems.length} />
       <div style={{ paddingTop: "4.5rem" }}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/" element={<Home onAdd={addItem} />} />
+          {/* Catálogo principal */}
+          <Route path="/catalogo" element={<Products onAdd={addItem} />} />
+          {/* (opcional) Alias para /productos */}
+          <Route path="/productos" element={<Products onAdd={addItem} />} />
+
+          <Route path="/contacto" element={<Contacto />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/profile" element={<Profile />} />
+
+          <Route
+            path="/checkout"
+            element={
+              <Checkout
+                cartItems={cartItems}
+                onFinalize={() => clearCart()}
+              />
+            }
+          />
+          <Route path="/order-summary" element={<OrderSummary />} />
         </Routes>
       </div>
 
-      {/* Footer global */}
       <Footer />
 
-      {/* Modal global del carrito: recibe props y funciones */}
       <CartModal
         cartItems={cartItems}
         onClearCart={clearCart}
         onCheckout={checkout}
         onRemoveItem={removeItem}
       />
+    </>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 }
