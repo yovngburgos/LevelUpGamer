@@ -17,7 +17,7 @@ export default function Navbar({ isAuthenticated = false, cartCount = 0, onLogou
               <NavLink to="/" end className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Inicio</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink to="/catalogo" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Productos</NavLink>
+              <NavLink to="/productos" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Productos</NavLink>
             </li>
             <li className="nav-item">
               <NavLink to="/contacto" className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}>Contacto</NavLink>
