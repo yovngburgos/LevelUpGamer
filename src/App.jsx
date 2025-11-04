@@ -2,6 +2,9 @@ import "./App.css";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
+import { AuthProvider, useAuth } from "./context/authContext";
+import RequireAuth from "./components/RequireAuth";
+
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -16,6 +19,7 @@ import Footer from "./components/Footer";
 import CartModal from "./components/CartModal";
 
 function AppRoutes() {
+  // Carrito
   const [cartItems, setCartItems] = useState(() => {
     try {
       const saved = localStorage.getItem("cartItems");
@@ -24,69 +28,53 @@ function AppRoutes() {
       return [];
     }
   });
-
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  const addItem = (item) => {
-    // usa sku como id estable
-    setCartItems((prev) => [...prev, { ...item, id: item.sku }]);
-  };
-
-  const removeItem = (item) => {
-    setCartItems((prev) =>
-      prev.filter((x, i) =>
-        item.id ? x.id !== item.id : i !== prev.indexOf(item)
-      )
-    );
-  };
-
+  const addItem = (item) => setCartItems((p) => [...p, { ...item, id: item.sku }]);
+  const removeItem = (item) =>
+    setCartItems((prev) => prev.filter((x, i) => (item.id ? x.id !== item.id : i !== prev.indexOf(item))));
   const clearCart = () => setCartItems([]);
 
   const navigate = useNavigate();
-  const checkout = () => {
-    // opcional: no limpiar acá; deja que Checkout lo haga tras submit
-    navigate("/checkout");
-  };
+  const checkout = () => navigate("/checkout");
+
+  // Auth (para Navbar)
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <>
-      <Navbar cartCount={cartItems.length} />
+      <Navbar cartCount={cartItems.length} isAuthenticated={isAuthenticated} onLogout={logout} />
       <div style={{ paddingTop: "4.5rem" }}>
         <Routes>
           <Route path="/" element={<Home onAdd={addItem} />} />
-          {/* Catálogo principal */}
           <Route path="/catalogo" element={<Products onAdd={addItem} />} />
-          {/* (opcional) Alias para /productos */}
           <Route path="/productos" element={<Products onAdd={addItem} />} />
 
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
+
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
 
           <Route
             path="/checkout"
-            element={
-              <Checkout
-                cartItems={cartItems}
-                onFinalize={() => clearCart()}
-              />
-            }
+            element={<Checkout cartItems={cartItems} onFinalize={() => clearCart()} />}
           />
           <Route path="/order-summary" element={<OrderSummary />} />
         </Routes>
       </div>
 
       <Footer />
-
-      <CartModal
-        cartItems={cartItems}
-        onClearCart={clearCart}
-        onCheckout={checkout}
-        onRemoveItem={removeItem}
-      />
+      <CartModal cartItems={cartItems} onClearCart={clearCart} onCheckout={checkout} onRemoveItem={removeItem} />
     </>
   );
 }
@@ -94,7 +82,9 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
     </BrowserRouter>
   );
 }
