@@ -1,5 +1,8 @@
+// Importo el componente ProductCard, que se encarga de mostrar cada producto individual
 import ProductCard from "./ProductCard";
 
+// Defino un arreglo constante con los productos destacados.
+// Cada producto tiene título, precio, SKU, color, imagen y descripción.
 const FEATURED = [
   {
     title: "Notebook Gamer Ultra Pro",
@@ -27,12 +30,20 @@ const FEATURED = [
   }
 ];
 
+// Defino el componente FeaturedProducts.
+// Recibe la función onAdd como prop, que se usa para agregar productos al carrito.
 export default function FeaturedProducts({ onAdd }) {
   return (
     <section className="container py-5">
+      {/* Título de la sección */}
       <h2 className="text-center mb-5">Productos Destacados</h2>
+
+      {/* Contenedor con Bootstrap para organizar los productos en filas y columnas */}
       <div className="row g-4 justify-content-center">
+        {/* Recorro el arreglo FEATURED y por cada producto renderizo un ProductCard */}
         {FEATURED.map((p) => (
+          // Uso el SKU como clave única y paso todas las propiedades del producto con spread operator {...p}
+          // Además, paso la función onAdd para que al hacer clic se agregue al carrito
           <ProductCard key={p.sku} {...p} onAdd={() => onAdd?.(p)} />
         ))}
       </div>

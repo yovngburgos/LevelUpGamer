@@ -1,26 +1,38 @@
-// src/components/CartModal.jsx
+// Defino el componente CartModal.
+// Recibe como props el listado de productos en el carrito y varias funciones de control:
+// - cartItems: arreglo con los productos [{ id, title, price, image, color, qty }]
+// - onClearCart: vaciar todo el carrito
+// - onCheckout: ir al proceso de compra
+// - onIncItem: aumentar cantidad de un producto
+// - onDecItem: disminuir cantidad de un producto
+// - onRemoveLine: eliminar un producto completo del carrito
 export default function CartModal({
-  cartItems = [],            // [{ id, title, price, image, color, qty }]
-  onClearCart = () => {},    // Vaciar todo
-  onCheckout = () => {},     // Ir a checkout
-  onIncItem,                 // (item) => void
-  onDecItem,                 // (item) => void
-  onRemoveLine,              // (item) => void
+  cartItems = [],
+  onClearCart = () => {},
+  onCheckout = () => {},
+  onIncItem,
+  onDecItem,
+  onRemoveLine,
 }) {
+  // Verifico si el carrito tiene productos
   const hasItems = cartItems.length > 0;
 
+  // Función auxiliar: convierte un precio a número
   const toNumber = (p) =>
     typeof p === "number" ? p : Number(String(p).replace(/[^\d]/g, "") || 0);
 
+  // Función auxiliar: formatea un número como moneda chilena (CLP)
   const formatCLP = (n) =>
     (Number(n) || 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" });
 
+  // Calculo el total sumando precio * cantidad de cada producto
   const total = cartItems.reduce(
     (sum, item) => sum + toNumber(item.price) * (item.qty || 1),
     0
   );
 
   return (
+    // Modal de Bootstrap que se abre al hacer clic en el carrito
     <div
       className="modal fade"
       id="cartModal"
@@ -30,13 +42,14 @@ export default function CartModal({
     >
       <div className="modal-dialog modal-lg modal-dialog-scrollable">
         <div className="modal-content">
-          {/* Header */}
+          
+          {/* Header del modal */}
           <div className="modal-header">
             <h5 className="modal-title" id="cartModalLabel">Carrito de Compras</h5>
             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
 
-          {/* Body */}
+          {/* Body del modal: listado de productos */}
           <div className="modal-body" id="cart-items">
             {hasItems ? (
               <>
@@ -50,6 +63,7 @@ export default function CartModal({
                       key={item.id ?? idx}
                       className="cart-item d-flex align-items-center justify-content-between mb-3"
                     >
+                      {/* Parte izquierda: imagen y detalles del producto */}
                       <div className="d-flex align-items-center">
                         {item.image && (
                           <img
@@ -71,9 +85,9 @@ export default function CartModal({
                         </div>
                       </div>
 
-                      {/* Controles derecha: qty, subtotal, eliminar */}
+                      {/* Parte derecha: controles de cantidad, subtotal y eliminar */}
                       <div className="d-flex align-items-center gap-3">
-                        {/* Cantidad */}
+                        {/* Control de cantidad con botones + y − */}
                         <div className="quantity-control d-flex align-items-center gap-2">
                           <button
                             type="button"
@@ -96,13 +110,13 @@ export default function CartModal({
                           </button>
                         </div>
 
-                        {/* Subtotal por línea */}
+                        {/* Subtotal de la línea */}
                         <div className="text-end">
                           <div className="fw-semibold">Subtotal</div>
                           <div>{formatCLP(lineTotal)}</div>
                         </div>
 
-                        {/* Eliminar línea */}
+                        {/* Botón para eliminar el producto del carrito */}
                         <button
                           type="button"
                           className="btn btn-sm btn-danger"
@@ -115,7 +129,7 @@ export default function CartModal({
                   );
                 })}
 
-                {/* Total */}
+                {/* Total general del carrito */}
                 <div className="d-flex justify-content-end mt-3">
                   <div className="text-end">
                     <div className="fw-semibold">Total</div>
@@ -128,8 +142,9 @@ export default function CartModal({
             )}
           </div>
 
-          {/* Footer */}
+          {/* Footer del modal: acciones principales */}
           <div className="modal-footer">
+            {/* Botón para vaciar el carrito */}
             <button
               type="button"
               className="btn btn-secondary"
@@ -139,6 +154,7 @@ export default function CartModal({
               Vaciar
             </button>
 
+            {/* Botón para finalizar compra y pasar al checkout */}
             <button
               type="button"
               className="btn btn-primary"

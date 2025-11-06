@@ -1,11 +1,17 @@
-// src/App.jsx
+// Importo los estilos generales de la aplicación
 import "./App.css";
+
+// Importo herramientas de React Router para manejar la navegación
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+
+// Importo hooks de React para manejar estado y efectos
 import { useEffect, useState } from "react";
 
+// Importo el contexto de autenticación y el componente que protege rutas privadas
 import { AuthProvider, useAuth } from "./context/authContext";
 import RequireAuth from "./components/RequireAuth";
 
+// Importo los componentes principales de la interfaz
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -15,12 +21,11 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Checkout from "./pages/Checkout";
 import OrderSummary from "./pages/OrderSummary";
-
 import Footer from "./components/Footer";
 import CartModal from "./components/CartModal";
 
 function AppRoutes() {
-  // 🛒 Estado del carrito (con persistencia)
+  // 🛒 Estado del carrito con persistencia en localStorage
   const [cartItems, setCartItems] = useState(() => {
     try {
       const saved = localStorage.getItem("cartItems");
@@ -30,11 +35,12 @@ function AppRoutes() {
     }
   });
 
+  // Cada vez que cambia el carrito, lo guardo en localStorage
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
 
-  // ➕ Agregar (si existe, incrementa qty)
+  // ➕ Agregar producto: si ya existe, incremento cantidad; si no, lo agrego nuevo
   const addItem = (item) => {
     setCartItems((prev) => {
       const id = item.sku || item.id;
@@ -48,7 +54,7 @@ function AppRoutes() {
     });
   };
 
-  // ➕ Incrementar cantidad
+  // ➕ Incrementar cantidad de un producto
   const incItem = (item) => {
     setCartItems((prev) =>
       prev.map((p) =>
@@ -57,7 +63,7 @@ function AppRoutes() {
     );
   };
 
-  // ➖ Decrementar cantidad (si queda en 0, elimina la línea)
+  // ➖ Decrementar cantidad: si llega a 0, elimino la línea
   const decItem = (item) => {
     setCartItems((prev) =>
       prev.flatMap((p) => {
@@ -68,28 +74,30 @@ function AppRoutes() {
     );
   };
 
-  // 🗑️ Eliminar la línea completa
+  // 🗑️ Eliminar un producto completamente del carrito
   const removeLine = (item) => {
     setCartItems((prev) => prev.filter((p) => p.id !== item.id));
   };
 
-  // 🧹 Vaciar carrito
+  // 🧹 Vaciar todo el carrito
   const clearCart = () => setCartItems([]);
 
-  // 💳 Navegar a checkout
+  // 💳 Función para navegar al checkout
   const navigate = useNavigate();
   const checkout = () => navigate("/checkout");
 
-  // 🔐 Auth (Navbar)
+  // 🔐 Estado de autenticación para mostrar opciones en el Navbar
   const { isAuthenticated, logout } = useAuth();
 
-  // Contador en navbar = suma de qty (no número de líneas)
+  // Contador de productos en el carrito (suma de cantidades, no de líneas)
   const cartCount = cartItems.reduce((acc, it) => acc + (it.qty || 1), 0);
 
   return (
     <>
+      {/* Navbar recibe el contador del carrito y estado de autenticación */}
       <Navbar cartCount={cartCount} isAuthenticated={isAuthenticated} onLogout={logout} />
 
+      {/* Defino las rutas principales de la aplicación */}
       <div style={{ paddingTop: "4.5rem" }}>
         <Routes>
           <Route path="/" element={<Home onAdd={addItem} />} />
@@ -99,6 +107,7 @@ function AppRoutes() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
+          {/* Ruta protegida: solo accesible si el usuario está autenticado */}
           <Route
             path="/profile"
             element={
@@ -108,6 +117,7 @@ function AppRoutes() {
             }
           />
 
+          {/* Checkout recibe el carrito y limpia al finalizar */}
           <Route
             path="/checkout"
             element={<Checkout cartItems={cartItems} onFinalize={() => clearCart()} />}
@@ -116,6 +126,7 @@ function AppRoutes() {
         </Routes>
       </div>
 
+      {/* Footer fijo en todas las páginas */}
       <Footer />
 
       {/* Modal del carrito con controles de cantidad */}
@@ -131,6 +142,7 @@ function AppRoutes() {
   );
 }
 
+// Componente principal: envuelve todo en BrowserRouter y AuthProvider
 export default function App() {
   return (
     <BrowserRouter>

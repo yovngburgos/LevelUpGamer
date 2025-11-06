@@ -1,19 +1,31 @@
+// Importo useState para manejar estados locales.
+// Importo useAuth para acceder al usuario y a la función updateProfile desde el contexto de autenticación.
 import { useState } from "react";
 import { useAuth } from "../context/authContext";
 
+// Defino el componente Profile
 export default function Profile() {
+  // Obtengo el usuario actual y la función para actualizar su perfil
   const { user, updateProfile } = useAuth();
+
+  // Estado para saber si estoy en modo edición o solo visualización
   const [editing, setEditing] = useState(false);
+
+  // Estado del formulario, inicializado con los datos del usuario
   const [form, setForm] = useState({ name: user?.name ?? "", tel: user?.tel ?? "" });
 
+  // Función que se ejecuta al enviar el formulario
   const onSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Evito recargar la página
+    // Actualizo el perfil con los datos del formulario
     updateProfile({ name: form.name.trim(), tel: form.tel.trim() });
+    // Salgo del modo edición
     setEditing(false);
   };
 
   return (
     <>
+      {/* Encabezado de la página */}
       <header className="bg-primary text-white text-center py-5 mt-5">
         <div className="container pt-5">
           <h1 className="display-4">Mi Cuenta</h1>
@@ -21,11 +33,13 @@ export default function Profile() {
         </div>
       </header>
 
+      {/* Contenido principal */}
       <main className="container py-5">
         <div className="card shadow-lg">
           <div className="card-body">
             <h4 className="card-title text-center mb-4">Información del Usuario</h4>
 
+            {/* Si NO estoy editando, muestro los datos actuales */}
             {!editing ? (
               <>
                 <p><strong>Nombre:</strong> <span>{user?.name}</span></p>
@@ -36,14 +50,25 @@ export default function Profile() {
                 </div>
               </>
             ) : (
+              // Si estoy en modo edición, muestro el formulario para actualizar nombre y teléfono
               <form className="mt-3" onSubmit={onSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Nombre completo</label>
-                  <input className="form-control" value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} required />
+                  <input
+                    className="form-control"
+                    value={form.name}
+                    onChange={(e)=>setForm({...form, name: e.target.value})}
+                    required
+                  />
                 </div>
                 <div className="mb-3">
                   <label className="form-label">Teléfono</label>
-                  <input className="form-control" value={form.tel} onChange={(e)=>setForm({...form, tel: e.target.value})} required />
+                  <input
+                    className="form-control"
+                    value={form.tel}
+                    onChange={(e)=>setForm({...form, tel: e.target.value})}
+                    required
+                  />
                 </div>
                 <div className="d-flex justify-content-end gap-2">
                   <button type="button" className="btn btn-secondary" onClick={()=>setEditing(false)}>Cancelar</button>
