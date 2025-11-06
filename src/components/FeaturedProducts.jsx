@@ -1,5 +1,8 @@
 // Importo el componente ProductCard, que se encarga de mostrar cada producto individual
 import ProductCard from "./ProductCard";
+import pc_Gamer from "../imagenes/pc_gamer.webp";
+import notebook_Gamer from "../imagenes/notebook_gamer.jpg";
+import gamer_auriculares from "../imagenes/gamer_auriculares.jpg";
 
 // Defino un arreglo constante con los productos destacados.
 // Cada producto tiene título, precio, SKU, color, imagen y descripción.
@@ -8,24 +11,21 @@ const FEATURED = [
     title: "Notebook Gamer Ultra Pro",
     price: 1899990,
     sku: "NOTEBOOK001",
-    color: "Negro",
-    image: "/imagenes/notebook_gamer.jpg",
+    image: notebook_Gamer,
     description: "Ideal para los gamers más exigentes. Procesador i9, RTX 4080."
   },
   {
     title: "PC Gamer Bestia RGB",
     price: 2450000,
     sku: "PCGAMER002",
-    color: "Negro",
-    image: "/imagenes/pc_gamer.webp",
+    image: pc_Gamer,
     description: "Experiencia gaming en 4K con iluminación RGB personalizable."
   },
   {
     title: "Auriculares Gamer Inmersivos",
     price: 89990,
     sku: "HEADSET003",
-    color: "Negro",
-    image: "/imagenes/audifonos_gamer.webp",
+    image: gamer_auriculares,
     description: "Sonido 7.1 envolvente y cancelación de ruido."
   }
 ];
