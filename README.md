@@ -1,16 +1,73 @@
-# React + Vite
+# 🎮 Level-Up Gamer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Level-Up Gamer** es una aplicación web desarrollada con **React** que simula una tienda gamer.  
+Incluye navegación, autenticación de usuarios, gestión de carrito de compras y flujo completo de checkout.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Características principales
 
-## React Compiler
+- 🛒 **Carrito de compras** con persistencia en `localStorage`  
+- 🔐 **Autenticación de usuarios** (registro, login, perfil y actualización de datos)  
+- 📦 **Checkout y resumen de pedido** con formulario de envío y pago  
+- 🎨 **Interfaz moderna** con Bootstrap, Bootstrap Icons y Animate.css  
+- ⚡ **Routing dinámico** con React Router  
+- 🧩 **Componentes reutilizables** y estructura modular  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tecnologías utilizadas
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- [React](https://react.dev/)  
+- [React Router](https://reactrouter.com/)  
+- [Bootstrap](https://getbootstrap.com/) + [Bootstrap Icons](https://icons.getbootstrap.com/)  
+- [Animate.css](https://animate.style/)  
+- Context API para autenticación  
+- `localStorage` para persistencia de datos  
+
+---
+
+## 📂 Estructura del proyecto
+
+src/
+ ├── components/        # Navbar, Footer, Hero, ProductCard, CartModal, RequireAut
+ ├── pages/             # Home, Products, Contacto, Login, Register, Profile, Checkout, OrderSummar
+ ├── context/           # AuthContext (manejo de autenticación
+ ├── services/          # auth.js (servicios de login/registro
+ ├── styles/            # CSS personalizad
+ ├── App.jsx            # Rutas principales y lógica del carrit
+ └── main.jsx           # Punto de entrada de la aplicació
+
+
+## ▶️ Instalación y ejecución
+
+1. Clona el repositorio:  
+   ```bash
+   git clone https://github.com/tuusuario/level-up-gamer.git
+   cd level-up-gamer
+
+   a. Instala dependencias:
+   npm install
+   b. Ejecuta en modo desarrollo:
+   npm run dev
+   c.Abre en tu navegador:
+   http://localhost:5173
+
+
+👤 Autenticación
+
+•  Registro de nuevos usuarios con nombre, correo, teléfono y contraseña.
+•  Login con validación de credenciales.
+•  Perfil editable (nombre y teléfono).
+•  Persistencia de sesión en localStorage.
+
+📜 Scripts disponibles
+
+•  npm run dev → inicia servidor de desarrollo con Vite
+•  npm run build → genera la versión optimizada para producción
+•  npm run preview → sirve la app compilada para pruebas
+•  npm run lint → revisa el código con ESLint
+•  npm run test → corre pruebas con Vitest en modo interactivo
+•  npm run test:run → corre las pruebas una sola vez
+•  npm run coverage → genera reporte de cobertura de pruebas
+
