@@ -1,20 +1,24 @@
 // src/components/CartModal.jsx
 export default function CartModal({
-  cartItems = [],           // [{ id?, title, price, image }]
-  onClearCart = () => {},   // función para vaciar carrito
-  onCheckout = () => {},    // función para finalizar compra
-  onRemoveItem,             // (opcional) función para eliminar 1 ítem: (item) => void
+  cartItems = [],            // [{ id, title, price, image, color, qty }]
+  onClearCart = () => {},    // Vaciar todo
+  onCheckout = () => {},     // Ir a checkout
+  onIncItem,                 // (item) => void
+  onDecItem,                 // (item) => void
+  onRemoveLine,              // (item) => void
 }) {
   const hasItems = cartItems.length > 0;
 
-  // Convierte price a número (soporta "$1.234.567" o 1234567)
   const toNumber = (p) =>
-    typeof p === 'number' ? p : Number(String(p).replace(/[^\d]/g, '') || 0);
-
-  const total = cartItems.reduce((sum, item) => sum + toNumber(item.price), 0);
+    typeof p === "number" ? p : Number(String(p).replace(/[^\d]/g, "") || 0);
 
   const formatCLP = (n) =>
-    (Number(n) || 0).toLocaleString('es-CL', { style: 'currency', currency: 'CLP' });
+    (Number(n) || 0).toLocaleString("es-CL", { style: "currency", currency: "CLP" });
+
+  const total = cartItems.reduce(
+    (sum, item) => sum + toNumber(item.price) * (item.qty || 1),
+    0
+  );
 
   return (
     <div
@@ -36,42 +40,80 @@ export default function CartModal({
           <div className="modal-body" id="cart-items">
             {hasItems ? (
               <>
-                {cartItems.map((item, idx) => (
-                  <div
-                    key={item.id ?? idx}
-                    className="cart-item d-flex align-items-center justify-content-between mb-3"
-                  >
-                    <div className="d-flex align-items-center">
-                      {item.image && (
-                        <img
-                          src={item.image}
-                          alt={item.title}
-                          className="cart-item-img me-3"
-                        />
-                      )}
-                      <div>
-                        <h6 className="mb-1">{item.title}</h6>
-                        <small className="text-muted">
-                          {typeof item.price === 'number' ? formatCLP(item.price) : item.price}
-                        </small>
-                        {/* (opcional) color, sku, etc. */}
-                        {item.color && (
-                          <div className="product-color-pill mt-1">Color: {item.color}</div>
+                {cartItems.map((item, idx) => {
+                  const unit = toNumber(item.price);
+                  const qty = item.qty || 1;
+                  const lineTotal = unit * qty;
+
+                  return (
+                    <div
+                      key={item.id ?? idx}
+                      className="cart-item d-flex align-items-center justify-content-between mb-3"
+                    >
+                      <div className="d-flex align-items-center">
+                        {item.image && (
+                          <img
+                            src={item.image}
+                            alt={item.title}
+                            className="cart-item-img me-3"
+                          />
                         )}
+                        <div>
+                          <h6 className="mb-1">{item.title}</h6>
+                          <small className="text-muted d-block">
+                            Precio unitario: {formatCLP(unit)}
+                          </small>
+                          {item.color && (
+                            <div className="product-color-pill mt-1">
+                              Color: {item.color}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Controles derecha: qty, subtotal, eliminar */}
+                      <div className="d-flex align-items-center gap-3">
+                        {/* Cantidad */}
+                        <div className="quantity-control d-flex align-items-center gap-2">
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-light"
+                            onClick={() => onDecItem?.(item)}
+                            aria-label="Disminuir cantidad"
+                          >
+                            −
+                          </button>
+                          <span className="px-2" style={{ minWidth: 24, textAlign: "center" }}>
+                            {qty}
+                          </span>
+                          <button
+                            type="button"
+                            className="btn btn-sm btn-outline-light"
+                            onClick={() => onIncItem?.(item)}
+                            aria-label="Aumentar cantidad"
+                          >
+                            +
+                          </button>
+                        </div>
+
+                        {/* Subtotal por línea */}
+                        <div className="text-end">
+                          <div className="fw-semibold">Subtotal</div>
+                          <div>{formatCLP(lineTotal)}</div>
+                        </div>
+
+                        {/* Eliminar línea */}
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-danger"
+                          onClick={() => onRemoveLine?.(item)}
+                        >
+                          Eliminar
+                        </button>
                       </div>
                     </div>
-
-                    {typeof onRemoveItem === 'function' && (
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-danger"
-                        onClick={() => onRemoveItem(item)}
-                      >
-                        Eliminar
-                      </button>
-                    )}
-                  </div>
-                ))}
+                  );
+                })}
 
                 {/* Total */}
                 <div className="d-flex justify-content-end mt-3">
