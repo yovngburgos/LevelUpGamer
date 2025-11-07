@@ -2,17 +2,17 @@
 // - Link: para enlaces simples sin recargar la página.
 // - NavLink: igual que Link, pero además me permite aplicar estilos activos cuando la ruta coincide.
 import { NavLink, Link } from 'react-router-dom';
+import { useAuth } from '../context/authContext'; // ← Importa tu contexto de autenticación
 
-// Defino el componente Navbar. Recibe tres props:
-// - isAuthenticated: indica si el usuario está logueado.
-// - cartCount: número de productos en el carrito.
-// - onLogout: función que se ejecuta al cerrar sesión.
-export default function Navbar({ isAuthenticated = false, cartCount = 0, onLogout = () => {} }) {
+export default function Navbar({ cartCount = 0 }) {
+  // Obtengo los datos del contexto
+  const { user, isAuthenticated, logout } = useAuth();
+
   return (
     // Uso clases de Bootstrap para crear una barra de navegación fija, oscura y expandible.
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div className="container-fluid">
-        
+
         {/* Logo o marca de la aplicación, que redirige al inicio */}
         <Link className="navbar-brand" to="/">Level-Up Gamer</Link>
 
@@ -48,10 +48,14 @@ export default function Navbar({ isAuthenticated = false, cartCount = 0, onLogou
                 <NavLink to="/register" className="btn btn-primary">Registrarse</NavLink>
               </div>
             ) : (
-              // Si el usuario SÍ está autenticado, muestro botón de Cuenta y Cerrar sesión
+              // Si el usuario SÍ está autenticado, muestro su nombre y el botón de Cerrar sesión
               <>
-                <NavLink to="/profile" className="btn btn-primary" id="account-button">Cuenta</NavLink>
-                <button className="btn btn-outline-light" type="button" onClick={onLogout}>Cerrar sesión</button>
+                <NavLink to="/profile" className="btn btn-primary" id="account-button">
+                  {user?.name || "Cuenta"}
+                </NavLink>
+                <button className="btn btn-outline-light" type="button" onClick={logout}>
+                  Cerrar sesión
+                </button>
               </>
             )}
 
