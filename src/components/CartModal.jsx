@@ -95,20 +95,23 @@ export default function CartModal({
                             onClick={() => onDecItem?.(item)}
                             aria-label="Disminuir cantidad"
                           >
-                            −
+                            <i className="bi bi-dash" aria-hidden="true"></i>
                           </button>
+
                           <span className="px-2" style={{ minWidth: 24, textAlign: "center" }}>
                             {qty}
                           </span>
+
                           <button
                             type="button"
                             className="btn btn-sm btn-outline-light"
                             onClick={() => onIncItem?.(item)}
                             aria-label="Aumentar cantidad"
                           >
-                            +
+                            <i className="bi bi-plus-lg" aria-hidden="true"></i>
                           </button>
                         </div>
+
 
                         {/* Subtotal de la línea */}
                         <div className="text-end">

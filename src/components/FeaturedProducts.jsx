@@ -36,7 +36,7 @@ export default function FeaturedProducts({ onAdd }) {
   return (
     <section className="container py-5">
       {/* Título de la sección */}
-      <h2 className="text-center mb-5">Productos Destacados</h2>
+      <h2 className="text-center mb-5" style={{ color: "#f7f5f8ff" }} >Productos Destacados</h2>
 
       {/* Contenedor con Bootstrap para organizar los productos en filas y columnas */}
       <div className="row g-4 justify-content-center">
