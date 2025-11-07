@@ -65,6 +65,7 @@ export default function Register() {
 
               {/* Formulario de registro */}
               <form onSubmit={onSubmit}>
+                {/* Campo de nombre */}
                 <div className="mb-3">
                   <label className="form-label">Nombre completo</label>
                   <input
@@ -75,6 +76,8 @@ export default function Register() {
                     required
                   />
                 </div>
+
+                {/* Campo de correo */}
                 <div className="mb-3">
                   <label className="form-label">Correo</label>
                   <input
@@ -86,6 +89,8 @@ export default function Register() {
                     required
                   />
                 </div>
+
+                {/* Campo de teléfono */}
                 <div className="mb-3">
                   <label className="form-label">Teléfono</label>
                   <input
@@ -96,6 +101,8 @@ export default function Register() {
                     required
                   />
                 </div>
+
+                {/* Campo de contraseña */}
                 <div className="mb-3">
                   <label className="form-label">Contraseña</label>
                   <input
@@ -108,6 +115,8 @@ export default function Register() {
                     required
                   />
                 </div>
+
+                {/* Campo de confirmación de contraseña */}
                 <div className="mb-3">
                   <label className="form-label">Confirmar contraseña</label>
                   <input
@@ -119,6 +128,8 @@ export default function Register() {
                     required
                   />
                 </div>
+
+                {/* Botón de envío */}
                 <button type="submit" className="btn btn-primary w-100">Registrarse</button>
               </form>
 
