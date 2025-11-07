@@ -19,6 +19,8 @@ export default function Hero() {
           Bienvenido a Level-Up Gamer
         </h1>
 
+        
+
         {/* Subtítulo con animación de subida */}
         <p className="lead mb-4 animate__animated animate__fadeInUp">
           Tu tienda gamer de confianza: notebooks, PCs, accesorios y más.
