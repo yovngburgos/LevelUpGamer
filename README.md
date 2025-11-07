@@ -31,11 +31,17 @@ Incluye navegación, autenticación de usuarios, gestión de carrito de compras 
 
 src/
  ├── components/        # Navbar, Footer, Hero, ProductCard, CartModal, RequireAut
+ 
  ├── pages/             # Home, Products, Contacto, Login, Register, Profile, Checkout, OrderSummar
+ 
  ├── context/           # AuthContext (manejo de autenticación
+ 
  ├── services/          # auth.js (servicios de login/registro
+ 
  ├── styles/            # CSS personalizad
+ 
  ├── App.jsx            # Rutas principales y lógica del carrit
+ 
  └── main.jsx           # Punto de entrada de la aplicació
 
 
@@ -43,15 +49,15 @@ src/
 
 1. Clona el repositorio:  
    ```bash
-   git clone https://github.com/tuusuario/level-up-gamer.git
+   git clone https://github.com/yovngburgos/LevelUpGamer.git
    cd level-up-gamer
 
    a. Instala dependencias:
-   npm install
+     npm install
    b. Ejecuta en modo desarrollo:
-   npm run dev
+     npm run dev
    c.Abre en tu navegador:
-   http://localhost:5173
+     http://localhost:5173
 
 
 👤 Autenticación
@@ -64,10 +70,16 @@ src/
 📜 Scripts disponibles
 
 •  npm run dev → inicia servidor de desarrollo con Vite
+
 •  npm run build → genera la versión optimizada para producción
+
 •  npm run preview → sirve la app compilada para pruebas
+
 •  npm run lint → revisa el código con ESLint
+
 •  npm run test → corre pruebas con Vitest en modo interactivo
+
 •  npm run test:run → corre las pruebas una sola vez
+
 •  npm run coverage → genera reporte de cobertura de pruebas
 
