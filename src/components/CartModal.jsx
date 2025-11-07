@@ -74,7 +74,7 @@ export default function CartModal({
                         )}
                         <div>
                           <h6 className="mb-1">{item.title}</h6>
-                          <small className="text-muted d-block">
+                          <small className="precio-unitario d-block">
                             Precio unitario: {formatCLP(unit)}
                           </small>
                           {item.color && (

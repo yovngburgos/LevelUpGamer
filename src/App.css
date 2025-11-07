@@ -40,3 +40,9 @@
 .read-the-docs {
   color: #888;
 }
+
+.precio-unitario {
+  color: #6c757d; /* gris claro */
+  font-weight: bold;
+}
+
