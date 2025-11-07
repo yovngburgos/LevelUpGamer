@@ -12,7 +12,6 @@ const PRODUCTS = [
     title: "Notebook Gamer Ultra Pro",
     price: 1899990,
     sku: "NOTEBOOK001",
-    color: "Negro",
     image: notebook_gamer,
     description: "Procesador i9, RTX 4080, 32GB RAM."
   },
@@ -20,7 +19,6 @@ const PRODUCTS = [
     title: "PC Gamer Bestia RGB",
     price: 2450000,
     sku: "PCGAMER002",
-    color: "Negro",
     image: pc_Gamer,
     description: "Gaming en 4K con iluminación RGB personalizable."
   },
@@ -28,7 +26,6 @@ const PRODUCTS = [
     title: "Auriculares Gamer Inmersivos",
     price: 89990,
     sku: "HEADSET003",
-    color: "Negro",
     image: gamer_auriculares,
     description: "Sonido 7.1 envolvente y cancelación de ruido."
   },
@@ -36,7 +33,6 @@ const PRODUCTS = [
     title: "Mouse Gamer Pro",
     price: 39990,
     sku: "MOUSE004",
-    color: "Negro",
     image: mouse_gamer,
     description: "Sensor óptico 16.000 DPI con RGB."
   },
@@ -44,7 +40,6 @@ const PRODUCTS = [
     title: "Teclado Mecánico RGB",
     price: 79990,
     sku: "TECLADO005",
-    color: "Negro",
     image: teclado_gamer,
     description: "Switches mecánicos + retroiluminación personalizable."
   },
@@ -52,7 +47,6 @@ const PRODUCTS = [
     title: "Silla Gamer Premium",
     price: 199990,
     sku: "SILLA006",
-    color: "Negro",
     image: silla_gamer,
     description: "Ergonómica, reclinable, con soporte lumbar."
   }

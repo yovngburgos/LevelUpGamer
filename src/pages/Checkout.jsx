@@ -1,6 +1,8 @@
 // Importo useNavigate desde react-router-dom.
 // Este hook me permite redirigir al usuario a otra ruta después de finalizar la compra.
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/authContext"; // Asegúrate de que la ruta sea correcta
 
 // Defino el componente Checkout.
 // Recibe como props:
@@ -8,19 +10,53 @@ import { useNavigate } from "react-router-dom";
 // - onFinalize: función que se ejecuta al terminar la compra (por ejemplo, limpiar el carrito).
 export default function Checkout({ cartItems = [], onFinalize }) {
   const navigate = useNavigate();
+  const { user } = useAuth(); // Obtenemos los datos del usuario loggeado
 
-  // Función que se ejecuta al enviar el formulario
+  // Estado del formulario
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    tel: "",
+    direccion: "",
+    metodoPago: "",
+  });
+
+  // Cuando el usuario cambia (se loggea o desloggea), actualizamos los campos
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        name: user.name || "",
+        email: user.email || "",
+        tel: user.tel || "",
+      }));
+    } else {
+      setFormData({
+        name: "",
+        email: "",
+        tel: "",
+        direccion: "",
+        metodoPago: "",
+      });
+    }
+  }, [user]);
+
+  // Manejo de cambios en el formulario
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Envío del formulario
   const onSubmit = (e) => {
-    e.preventDefault(); // Evito que la página se recargue
-    // Aquí podría agregar validaciones o enviar los datos a un backend
+    e.preventDefault();
     onFinalize?.(); // Limpio el carrito si corresponde
-    // Redirijo al usuario a la página de resumen de pedido, pasando los items como estado
     navigate("/order-summary", { state: { items: cartItems } });
   };
 
   return (
     <>
-      {/* Encabezado de la página con título y subtítulo */}
+      {/* Encabezado */}
       <header className="bg-primary text-white text-center py-5 mt-5">
         <div className="container pt-5">
           <h1 className="display-4">Finalizar tu Compra</h1>
@@ -32,37 +68,70 @@ export default function Checkout({ cartItems = [], onFinalize }) {
       <main className="container py-5">
         <section>
           <h2 className="text-center mb-4">Detalles de Envío y Pago</h2>
-          
-          {/* Formulario de datos del cliente */}
+
           <form className="row g-3" onSubmit={onSubmit}>
-            {/* Nombre completo */}
+            {/* Nombre */}
             <div className="col-md-6">
               <label className="form-label">Nombre Completo</label>
-              <input className="form-control" required />
+              <input
+                name="name"
+                className="form-control"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                readOnly={!!user}
+              />
             </div>
 
-            {/* Correo electrónico */}
+            {/* Correo */}
             <div className="col-md-6">
               <label className="form-label">Correo Electrónico</label>
-              <input type="email" className="form-control" required />
+              <input
+                name="email"
+                type="email"
+                className="form-control"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                readOnly={!!user}
+              />
             </div>
 
             {/* Teléfono */}
             <div className="col-md-6">
               <label className="form-label">Teléfono</label>
-              <input className="form-control" required />
+              <input
+                name="tel"
+                className="form-control"
+                value={formData.tel}
+                onChange={handleChange}
+                required
+                readOnly={!!user}
+              />
             </div>
 
-            {/* Dirección de envío */}
+            {/* Dirección */}
             <div className="col-md-6">
               <label className="form-label">Dirección de Envío</label>
-              <input className="form-control" required />
+              <input
+                name="direccion"
+                className="form-control"
+                value={formData.direccion}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             {/* Método de pago */}
             <div className="col-md-12">
               <label className="form-label">Método de Pago</label>
-              <select className="form-select" required>
+              <select
+                name="metodoPago"
+                className="form-select"
+                value={formData.metodoPago}
+                onChange={handleChange}
+                required
+              >
                 <option value="">Selecciona…</option>
                 <option value="debito">Débito</option>
                 <option value="credito">Crédito</option>
@@ -70,10 +139,26 @@ export default function Checkout({ cartItems = [], onFinalize }) {
               </select>
             </div>
 
-            {/* Botones de acción */}
+            {/* Botones */}
             <div className="col-12">
-              <button className="btn btn-primary" type="submit">Finalizar Pedido</button>
-              <button className="btn btn-secondary ms-2" type="reset">Limpiar</button>
+              <button className="btn btn-primary" type="submit">
+                Finalizar Pedido
+              </button>
+              <button
+                className="btn btn-secondary ms-2"
+                type="reset"
+                onClick={() =>
+                  setFormData({
+                    name: user?.name || "",
+                    email: user?.email || "",
+                    tel: user?.tel || "",
+                    direccion: "",
+                    metodoPago: "",
+                  })
+                }
+              >
+                Limpiar
+              </button>
             </div>
           </form>
         </section>

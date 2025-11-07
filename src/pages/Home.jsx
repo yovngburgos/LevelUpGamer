@@ -15,13 +15,7 @@ export default function Home({ onAdd }) {
       {/* Sección de productos destacados, con la opción de agregar al carrito */}
       <FeaturedProducts onAdd={onAdd} />
 
-      {/* Espacio reservado para futuras secciones o contenido adicional */}
-      <div className="container py-5">
-        <h2 className="text-center mb-5">Próximamente más secciones</h2>
-        <p className="text-center text-muted">
-          Aquí podrías poner tus productos destacados, un video de presentación, etc.
-        </p>
-      </div>
+
     </>
   );
 }
